@@ -11,7 +11,7 @@ if (FOLDER === undefined) {
 }
 
 new StaticPageStack(app, `StaticPage`, {
-  stackName: `StaticPage-${DOMAIN}`.replace(".", "-"),
+  stackName: `StaticPage-${DOMAIN}`.split(".").join("-"),
   folder: FOLDER,
   fullDomain: DOMAIN,
 });
