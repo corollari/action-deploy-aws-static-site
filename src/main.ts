@@ -30,9 +30,9 @@ async function run(): Promise<void> {
     };
 
     execSync(
-      `PATH="${removeLastDir(process.execPath)}:$PATH" && (cd ${removeLastDir(
-        __dirname
-      )} && npm run synth)`,
+      `(cd ${removeLastDir(__dirname)} && PATH="${removeLastDir(
+        process.execPath
+      )}:$PATH" npm run synth)`,
       {
         env: {
           ...awsCredentials,
