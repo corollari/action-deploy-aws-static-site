@@ -25,7 +25,7 @@ async function run(): Promise<void> {
       AWS_SECRET_ACCESS_KEY,
     };
 
-    execSync(`npm run build`, {
+    execSync(`PATH="${process.execPath.split('/').slice(0, -1).join('/')}:$PATH" npm run synth`, {
       env: {
         ...awsCredentials,
         DOMAIN: domain,
