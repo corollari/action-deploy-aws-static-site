@@ -19,7 +19,13 @@ require('./sourcemap-register.js');module.exports =
 /******/ 		};
 /******/
 /******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 		var threw = true;
+/******/ 		try {
+/******/ 			modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 			threw = false;
+/******/ 		} finally {
+/******/ 			if(threw) delete installedModules[moduleId];
+/******/ 		}
 /******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
@@ -47,6 +53,13 @@ require('./sourcemap-register.js');module.exports =
 /***/ (function(module) {
 
 module.exports = require("os");
+
+/***/ }),
+
+/***/ 129:
+/***/ (function(module) {
+
+module.exports = require("child_process");
 
 /***/ }),
 
@@ -85,16 +98,34 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
-const wait_1 = __webpack_require__(521);
+const child_process_1 = __webpack_require__(129);
+const path = __importStar(__webpack_require__(622));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const ms = core.getInput('milliseconds');
-            core.debug(`Waiting ${ms} milliseconds ...`); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
-            core.debug(new Date().toTimeString());
-            yield wait_1.wait(parseInt(ms, 10));
-            core.debug(new Date().toTimeString());
-            core.setOutput('time', new Date().toTimeString());
+            const AWS_ACCESS_KEY_ID = core.getInput("AWS_ACCESS_KEY_ID");
+            const AWS_SECRET_ACCESS_KEY = core.getInput("AWS_SECRET_ACCESS_KEY");
+            const domain = core.getInput("domain");
+            if (domain.split(".").length < 2) {
+                throw new Error("Invalid domain, examples of correct domains are 'example.com' or 'subdomain.example.org'");
+            }
+            const raw_publish_dir = core.getInput("publish_dir");
+            const publish_dir = path.isAbsolute(raw_publish_dir)
+                ? raw_publish_dir
+                : path.join(`${process.env.GITHUB_WORKSPACE}`, raw_publish_dir);
+            core.debug(`Publishing directory '${publish_dir}' to '${domain}'`); // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
+            const awsCredentials = {
+                AWS_ACCESS_KEY_ID,
+                AWS_SECRET_ACCESS_KEY,
+            };
+            child_process_1.execSync(`npm run synth --scripts-prepend-node-path`, {
+                env: Object.assign(Object.assign({}, awsCredentials), { DOMAIN: domain, FOLDER: publish_dir }),
+            });
+            /*
+            execSync(`npm run deploy --scripts-prepend-node-path`, {
+              env:awsCredentials
+            })
+            */
         }
         catch (error) {
             core.setFailed(error.message);
@@ -431,37 +462,6 @@ function getState(name) {
 }
 exports.getState = getState;
 //# sourceMappingURL=core.js.map
-
-/***/ }),
-
-/***/ 521:
-/***/ (function(__unusedmodule, exports) {
-
-"use strict";
-
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.wait = void 0;
-function wait(milliseconds) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return new Promise(resolve => {
-            if (isNaN(milliseconds)) {
-                throw new Error('milliseconds not a number');
-            }
-            setTimeout(() => resolve('done!'), milliseconds);
-        });
-    });
-}
-exports.wait = wait;
-
 
 /***/ }),
 
