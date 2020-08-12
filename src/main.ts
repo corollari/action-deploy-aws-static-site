@@ -41,11 +41,14 @@ async function run(): Promise<void> {
         },
       }
     );
-    /*
-    execSync(`npm run deploy --scripts-prepend-node-path`, {
-      env:awsCredentials
-    })
-    */
+    execSync(
+      `(cd ${removeLastDir(__dirname)} && PATH="${removeLastDir(
+        process.execPath
+      )}:$PATH" node node_modules/aws-cdk/bin/cdk.js deploy)`,
+      {
+        env: awsCredentials,
+      }
+    );
   } catch (error) {
     core.setFailed(error.message);
   }
