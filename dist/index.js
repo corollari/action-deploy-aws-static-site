@@ -121,7 +121,7 @@ function run() {
                 AWS_ACCESS_KEY_ID,
                 AWS_SECRET_ACCESS_KEY,
             };
-            child_process_1.execSync(`(cd ${removeLastDir(__dirname)} && PATH="${removeLastDir(process.execPath)}:$PATH" npm run synth)`, {
+            child_process_1.execSync(`(cd ${removeLastDir(__dirname)} && PATH="${removeLastDir(process.execPath)}:$PATH" node node_modules/aws-cdk/bin/cdk.js synth)`, {
                 env: Object.assign(Object.assign({}, awsCredentials), { DOMAIN: domain, FOLDER: publish_dir }),
             });
             /*

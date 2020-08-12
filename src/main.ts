@@ -32,7 +32,7 @@ async function run(): Promise<void> {
     execSync(
       `(cd ${removeLastDir(__dirname)} && PATH="${removeLastDir(
         process.execPath
-      )}:$PATH" npm run synth)`,
+      )}:$PATH" node node_modules/aws-cdk/bin/cdk.js synth)`,
       {
         env: {
           ...awsCredentials,
