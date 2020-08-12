@@ -25,7 +25,7 @@ async function run(): Promise<void> {
       AWS_SECRET_ACCESS_KEY,
     };
 
-    execSync(`npm run synth --scripts-prepend-node-path`, {
+    execSync(`npm run build`, {
       env: {
         ...awsCredentials,
         DOMAIN: domain,
