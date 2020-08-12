@@ -1,5 +1,5 @@
 {
-  "app": "./lib/stack.js",
+  "app": "npx node ./lib/stack.js",
   "context": {
     "@aws-cdk/core:enableStackNameDuplicates": "true",
     "aws-cdk:enableDiffNoFail": "true"
