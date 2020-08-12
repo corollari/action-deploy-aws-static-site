@@ -1,4 +1,3 @@
-import "source-map-support/register";
 import * as cdk from "@aws-cdk/core";
 import { StaticPageStack } from "./static-page-stack";
 

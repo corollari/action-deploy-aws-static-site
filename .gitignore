@@ -1,5 +1,6 @@
 node_modules/*
 !node_modules/aws-cdk/
+!node_modules/@aws-cdk/
 
 # CDK
 cdk.context.json
