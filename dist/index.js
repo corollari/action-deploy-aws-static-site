@@ -100,6 +100,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const core = __importStar(__webpack_require__(470));
 const child_process_1 = __webpack_require__(129);
 const path = __importStar(__webpack_require__(622));
+function removeLastDir(dirPath) {
+    return dirPath.split("/").slice(0, -1).join("/");
+}
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -118,7 +121,7 @@ function run() {
                 AWS_ACCESS_KEY_ID,
                 AWS_SECRET_ACCESS_KEY,
             };
-            child_process_1.execSync(`PATH="${process.execPath.split('/').slice(0, -1).join('/')}:$PATH" npm run synth`, {
+            child_process_1.execSync(`PATH="${removeLastDir(process.execPath)}:$PATH" && (cd ${removeLastDir(__dirname)} && npm run synth)`, {
                 env: Object.assign(Object.assign({}, awsCredentials), { DOMAIN: domain, FOLDER: publish_dir }),
             });
             /*

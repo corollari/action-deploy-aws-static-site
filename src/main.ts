@@ -2,6 +2,10 @@ import * as core from "@actions/core";
 import { execSync } from "child_process";
 import * as path from "path";
 
+function removeLastDir(dirPath: string): string {
+  return dirPath.split("/").slice(0, -1).join("/");
+}
+
 async function run(): Promise<void> {
   try {
     const AWS_ACCESS_KEY_ID: string = core.getInput("AWS_ACCESS_KEY_ID");
@@ -25,13 +29,18 @@ async function run(): Promise<void> {
       AWS_SECRET_ACCESS_KEY,
     };
 
-    execSync(`PATH="${process.execPath.split('/').slice(0, -1).join('/')}:$PATH" npm run synth`, {
-      env: {
-        ...awsCredentials,
-        DOMAIN: domain,
-        FOLDER: publish_dir,
-      },
-    });
+    execSync(
+      `PATH="${removeLastDir(process.execPath)}:$PATH" && (cd ${removeLastDir(
+        __dirname
+      )} && npm run synth)`,
+      {
+        env: {
+          ...awsCredentials,
+          DOMAIN: domain,
+          FOLDER: publish_dir,
+        },
+      }
+    );
     /*
     execSync(`npm run deploy --scripts-prepend-node-path`, {
       env:awsCredentials
