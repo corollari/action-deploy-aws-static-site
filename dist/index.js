@@ -125,7 +125,7 @@ function run() {
                 env: Object.assign(Object.assign({}, awsCredentials), { DOMAIN: domain, FOLDER: publish_dir }),
             });
             child_process_1.execSync(`(cd ${removeLastDir(__dirname)} && PATH="${removeLastDir(process.execPath)}:$PATH" node node_modules/aws-cdk/bin/cdk.js deploy)`, {
-                env: awsCredentials
+                env: Object.assign(Object.assign({}, awsCredentials), { DOMAIN: domain, FOLDER: publish_dir })
             });
         }
         catch (error) {

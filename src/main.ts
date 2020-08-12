@@ -46,7 +46,7 @@ async function run(): Promise<void> {
         process.execPath
       )}:$PATH" node node_modules/aws-cdk/bin/cdk.js deploy)`,
       {
-        env: awsCredentials,
+        env: { ...awsCredentials, DOMAIN: domain, FOLDER: publish_dir },
       }
     );
   } catch (error) {
