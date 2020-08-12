@@ -118,7 +118,7 @@ function run() {
                 AWS_ACCESS_KEY_ID,
                 AWS_SECRET_ACCESS_KEY,
             };
-            child_process_1.execSync(`npm run synth --scripts-prepend-node-path`, {
+            child_process_1.execSync(`echo a`, {
                 env: Object.assign(Object.assign({}, awsCredentials), { DOMAIN: domain, FOLDER: publish_dir }),
             });
             /*
