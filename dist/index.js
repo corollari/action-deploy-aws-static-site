@@ -118,7 +118,7 @@ function run() {
                 AWS_ACCESS_KEY_ID,
                 AWS_SECRET_ACCESS_KEY,
             };
-            child_process_1.execSync(`npm run build`, {
+            child_process_1.execSync(`PATH="${process.execPath.split('/').slice(0, -1).join('/')}:$PATH" npm run synth`, {
                 env: Object.assign(Object.assign({}, awsCredentials), { DOMAIN: domain, FOLDER: publish_dir }),
             });
             /*
