@@ -1,3 +1,6 @@
+<h3 align="center">All development has moved to <a href="https://github.com/onramper/action-deploy-aws-static-site#readme">@onramper/action-deploy-aws-static-site</a></h3>
+<br>
+
 <h1 align="center">
   Deploy static site to AWS
   <br>
